@@ -1,0 +1,29 @@
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 24px;
+}
+
+img {
+  image-rendering: pixelated;
+  width: 500px;
+  height: 500px;
+}
+.adivino{
+  filter: contrast(100%) brightness(100%);
+}
+.noadivino{
+  filter: contrast(0%) brightness(0%);
+}
+#answer{
+  display: flex;
+}
+#titulo{
+  color: black;
+}
+.border{
+  border-image-repeat: stretch;
+}
