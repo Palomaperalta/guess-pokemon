@@ -1,55 +1,86 @@
-import {useState, useEffect} from 'react'
-import api from './api'
-import { Pokemon } from './types';
+import { useState, useEffect } from "react";
+
+import api from "./api";
+import { Pokemon } from "./types";
 
 function App() {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null)
-  const [pokemonName, setPokemonName] = useState('')
-  const [imgClassName, setImgClassName] = useState('noadivino')
-  const [openDialog, setOpenDialog] = useState(false)
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const [pokemonName, setPokemonName] = useState("");
+  const [imgClassName, setImgClassName] = useState("noadivino");
+  const [openDialog, setOpenDialog] = useState(false);
 
-  useEffect(()=>{
-    getPokemon()
-  }, [])
+  useEffect(() => {
+    getPokemon();
+  }, []);
 
-  async function getPokemon(){
-    const newpokemon = await api.random()
-    setPokemon(newpokemon)
-  } 
-  const handleAnswer = () =>{
-    if(pokemonName.toLowerCase().replace(/\s/g, "").replace(/\./g, "").trim() === pokemon.name){
-      setImgClassName('adivino')
-      setOpenDialog(true)
+  async function getPokemon() {
+    const newpokemon = await api.random();
+
+    setPokemon(newpokemon);
+  }
+  const handleAnswer = () => {
+    if (
+      pokemonName.toLowerCase().replace(/\s/g, "").replace(/\./g, "").trim() ===
+      pokemon?.name
+    ) {
+      setImgClassName("adivino");
+      setOpenDialog(true);
     }
-  }
-  const handleNameChange = (event) =>{
-    setPokemonName(event.target.value)
-  }
-  const handlePlayAgain = () =>{
-    window.location.reload()
-  }
+  };
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPokemonName(event.target.value);
+  };
+  const handlePlayAgain = () => {
+    window.location.reload();
+  };
 
   return (
     <main>
-      <span id="titulo" className="nes-text is-primary">Quién es este Pokemon?</span>
-      <img className={imgClassName} alt="" src={pokemon?.image}></img>
+      <span className="nes-text is-primary" id="titulo">
+        Quién es este Pokemon?
+      </span>
+      <img alt="" className={imgClassName} src={pokemon?.image} />
       <div className="nes-field" id="answer">
-        <input value={pokemonName} onChange={handleNameChange} type="text" id="name_field" className="nes-input border" />
-        <button onClick={handleAnswer} type="button" className={`nes-btn is-primary border${imgClassName === 'adivino' ? ' is-disabled': ''}`}>Adivinar</button>
-        {imgClassName === 'adivino' ? <button onClick={handlePlayAgain} type="button" className="nes-btn is-success">Play again</button> : null}
+        <input
+          className="nes-input border"
+          id="name_field"
+          type="text"
+          value={pokemonName}
+          onChange={handleNameChange}
+        />
+        <button
+          className={`nes-btn is-primary border${
+            imgClassName === "adivino" ? "is-disabled" : ""
+          }`}
+          type="button"
+          onClick={handleAnswer}
+        >
+          Adivinar
+        </button>
+        {imgClassName === "adivino" ? (
+          <button
+            className="nes-btn is-success"
+            type="button"
+            onClick={handlePlayAgain}
+          >
+            Play again
+          </button>
+        ) : null}
       </div>
-      <dialog open={openDialog} className="nes-dialog" id="dialog-default">
+      <dialog className="nes-dialog" id="dialog-default" open={openDialog}>
         <form method="dialog">
           <p className="title">Congratulations!</p>
           <p>You answered correctly</p>
           <menu className="dialog-menu">
             <button className="nes-btn">Cancel</button>
-            <button onClick={handlePlayAgain} className="nes-btn is-primary">Play again</button>
+            <button className="nes-btn is-primary" onClick={handlePlayAgain}>
+              Play again
+            </button>
           </menu>
         </form>
       </dialog>
     </main>
-  )
+  );
 }
 
 export default App;
